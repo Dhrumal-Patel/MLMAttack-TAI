@@ -354,11 +354,11 @@ def main():
     # Initialize model
     num_labels = 4 if (args.dataset == 'agnews') else 2
     if (args.type == 'adv'):
-        joint_model = torch.load(args.clean_model_path).to('cuda')
+        joint_model = torch.load(args.clean_model_path, weights_only=False).to('cuda')
     else:
         joint_model = MLMAttacker(args.model_name, num_labels, args.target_label).to('cuda')
         if (args.type == 'backdoor'):
-            pre_model = torch.load(args.clean_model_path)
+            pre_model = torch.load(args.clean_model_path, weights_only=False)
             mlm = pre_model.mlm.to('cuda')
             joint_model.mlm = mlm
             joint_model.mask_table = pre_model.mask_table
